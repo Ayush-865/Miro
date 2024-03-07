@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { formatDistance } from "date-fns";
 
 interface FooterProps {
-  isFavourite: boolean;
+  isFavorite: boolean;
   title: string;
   authorLabel: string;
   createdAtLabel: string;
@@ -12,13 +12,19 @@ interface FooterProps {
 }
 
 const Footer = ({
-  isFavourite,
+  isFavorite,
   authorLabel,
   createdAtLabel,
   disabled,
   onClick,
   title,
 }: FooterProps) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onClick();
+  };
+
   return (
     <>
       <div className="relative bg-white p-3">
@@ -29,13 +35,13 @@ const Footer = ({
         </p>
         <button
           disabled={disabled}
-          onClick={onClick}
+          onClick={handleClick}
           className={cn(
             "opacity-0 group-hover:opacity-100 transition-opacity absolute top-3 right-3 text-muted-foreground hover:text-blue-600",
             disabled && "cursor-not-allowed opacity-75"
           )}
         >
-          <Star className={cn("w-4 h-4 ", isFavourite && "fill-blue-600")} />
+          <Star className={cn("w-4 h-4 ", isFavorite && "fill-blue-600")} />
         </button>
       </div>
     </>

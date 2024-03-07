@@ -97,7 +97,7 @@ const BoardList = ({ orgId, query }: BoardListParams) => {
                 authorName={board.authorName}
                 createdAt={board._creationTime}
                 orgId={board.orgId}
-                isFavourite={false}
+                isFavorite={board.isFavorite}
               />
             );
           })}

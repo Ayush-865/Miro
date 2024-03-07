@@ -6,6 +6,9 @@ import Footer from "./Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Actions } from "@/components/actions";
 import { MoreHorizontal } from "lucide-react";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
 interface BoardCardProps {
   id: string;
@@ -15,7 +18,7 @@ interface BoardCardProps {
   authorName: string;
   createdAt: string;
   orgId: string;
-  isFavourite: boolean;
+  isFavorite: boolean;
 }
 
 const BoardCard = ({
@@ -25,11 +28,26 @@ const BoardCard = ({
   authorId,
   authorName,
   createdAt,
-  isFavourite,
+  isFavorite,
   orgId,
 }: BoardCardProps) => {
   const { userId } = useAuth();
   const authorLabel = userId === authorId ? "You" : authorName;
+
+  const { mutate: onFavorite, pending: pendingFavorite } = useApiMutation(
+    api.board.favorite
+  );
+  const { mutate: onUnfavorite, pending: pendingUnfavorite } = useApiMutation(
+    api.board.unfavorite
+  );
+
+  const toggleFavorite = () => {
+    if (isFavorite) {
+      onUnfavorite({ id }).catch(() => toast.error("Failed to unfavorite"));
+    } else {
+      onFavorite({ id, orgId }).catch(() => toast.error("Failed to favorite"));
+    }
+  };
 
   return (
     <>
@@ -45,12 +63,12 @@ const BoardCard = ({
             </Actions>
           </div>
           <Footer
-            isFavourite={isFavourite}
+            isFavorite={isFavorite}
             title={title}
             authorLabel={authorLabel}
             createdAtLabel={createdAt}
-            onClick={() => {}}
-            disabled={false}
+            onClick={toggleFavorite}
+            disabled={pendingFavorite || pendingUnfavorite}
           />
         </div>
       </Link>
