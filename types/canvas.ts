@@ -21,8 +21,8 @@ export type RectangleLayer = {
   type: LayerType.Rectangle;
   x: number;
   y: number;
-  width: number;
   height: number;
+  width: number;
   fill: Color;
   value?: string;
 };
@@ -31,8 +31,8 @@ export type EllipseLayer = {
   type: LayerType.Ellipse;
   x: number;
   y: number;
-  width: number;
   height: number;
+  width: number;
   fill: Color;
   value?: string;
 };
@@ -41,10 +41,10 @@ export type PathLayer = {
   type: LayerType.Path;
   x: number;
   y: number;
-  width: number;
   height: number;
-  points: number[][];
+  width: number;
   fill: Color;
+  points: number[][];
   value?: string;
 };
 
@@ -52,19 +52,19 @@ export type TextLayer = {
   type: LayerType.Text;
   x: number;
   y: number;
-  width: number;
   height: number;
+  width: number;
   fill: Color;
   value?: string;
 };
 
 export type NoteLayer = {
   type: LayerType.Note;
-  x: 0;
-  y: 0;
-  width: 0;
-  height: 0;
-  fill: { r: 255; g: 255; b: 255 };
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  fill: Color;
   value?: string;
 };
 
@@ -92,10 +92,6 @@ export type CanvasState =
       mode: CanvasMode.None;
     }
   | {
-      mode: CanvasMode.Pressing;
-      origin: Point;
-    }
-  | {
       mode: CanvasMode.SelectionNet;
       origin: Point;
       current?: Point;
@@ -106,15 +102,23 @@ export type CanvasState =
     }
   | {
       mode: CanvasMode.Inserting;
-      LayerType: LayerType;
-    }
-  | {
-      mode: CanvasMode.Resizing;
-      initialBounce: XYWH;
-      corner: Side;
+      layerType:
+        | LayerType.Ellipse
+        | LayerType.Rectangle
+        | LayerType.Text
+        | LayerType.Note;
     }
   | {
       mode: CanvasMode.Pencil;
+    }
+  | {
+      mode: CanvasMode.Pressing;
+      origin: Point;
+    }
+  | {
+      mode: CanvasMode.Resizing;
+      initialBounds: XYWH;
+      corner: Side;
     };
 
 export enum CanvasMode {
@@ -126,3 +130,10 @@ export enum CanvasMode {
   Resizing,
   Pencil,
 }
+
+export type Layer =
+  | RectangleLayer
+  | EllipseLayer
+  | PathLayer
+  | TextLayer
+  | NoteLayer;
