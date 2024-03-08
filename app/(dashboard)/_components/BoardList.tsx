@@ -14,7 +14,11 @@ interface BoardListParams {
 }
 
 const BoardList = ({ orgId, query }: BoardListParams) => {
-  const data = useQuery(api.boards.get, { orgId }) as any[];
+  const data = useQuery(api.boards.get, {
+    orgId,
+    ...query,
+    favorites: query.favorites ? query.favorites.toString() : undefined,
+  }) as any[];
 
   if (data === undefined) {
     return (
