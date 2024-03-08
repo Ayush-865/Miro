@@ -11,7 +11,6 @@ const Canvas = ({ boardId }: CanvasProps) => {
   return (
     <>
       <main className="h-screen w-screen relative touch-none bg-neutral-100 ">
-        Canvas
         <Info boardId={boardId} />
         <Participants />
         <Toolbar />
