@@ -1,9 +1,5 @@
-"use client";
-import { Skeleton } from "@/components/ui/skeleton";
-import ToolButton from "./ToolButton";
 import {
   Circle,
-  MousePointer,
   MousePointer2,
   Pencil,
   Redo2,
@@ -13,91 +9,134 @@ import {
   Undo2,
 } from "lucide-react";
 
-const Toolbar = () => {
+import { CanvasMode, CanvasState, LayerType } from "@/types/canvas";
+import ToolButton from "./ToolButton";
+
+interface ToolbarProps {
+  canvasState: CanvasState;
+  setCanvasState: (newState: CanvasState) => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+}
+
+const Toolbar = ({
+  canvasState,
+  setCanvasState,
+  undo,
+  redo,
+  canUndo,
+  canRedo,
+}: ToolbarProps) => {
   return (
-    <>
-      <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
-        <div className="bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadom-md">
-          <ToolButton
-            onClick={() => {}}
-            label="Pointer"
-            icon={MousePointer}
-            isActive={false}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Select"
-            icon={MousePointer2}
-            isActive={false}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Text"
-            icon={Type}
-            isActive={false}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Sticky Note"
-            icon={StickyNote}
-            isActive={false}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Rectangle"
-            icon={Square}
-            isActive={false}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Ellipse"
-            icon={Circle}
-            isActive={false}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Pen"
-            icon={Pencil}
-            isActive={false}
-          />
-        </div>
-        <div className="bg-white rounded-md p-1.5 flex flex-col shadow-md items-center ">
-          <ToolButton
-            onClick={() => {}}
-            label="Undo"
-            icon={Undo2}
-            isActive={false}
-            isDisabled={true}
-          />
-          <ToolButton
-            onClick={() => {}}
-            label="Redo"
-            icon={Redo2}
-            isActive={false}
-            isDisabled={true}
-          />
-        </div>
+    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
+      <div className="bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadow-md">
+        <ToolButton
+          label="Select"
+          icon={MousePointer2}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.None,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.None ||
+            canvasState.mode === CanvasMode.Translating ||
+            canvasState.mode === CanvasMode.SelectionNet ||
+            canvasState.mode === CanvasMode.Pressing ||
+            canvasState.mode === CanvasMode.Resizing
+          }
+        />
+        <ToolButton
+          label="Text"
+          icon={Type}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              LayerType: LayerType.Text,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.LayerType === LayerType.Text
+          }
+        />
+        <ToolButton
+          label="Sticky note"
+          icon={StickyNote}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              LayerType: LayerType.Note,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.LayerType === LayerType.Note
+          }
+        />
+        <ToolButton
+          label="Rectangle"
+          icon={Square}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              LayerType: LayerType.Rectangle,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.LayerType === LayerType.Rectangle
+          }
+        />
+        <ToolButton
+          label="Ellipse"
+          icon={Circle}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              LayerType: LayerType.Ellipse,
+            })
+          }
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.LayerType === LayerType.Ellipse
+          }
+        />
+        <ToolButton
+          label="Pen"
+          icon={Pencil}
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Pencil,
+            })
+          }
+          isActive={canvasState.mode === CanvasMode.Pencil}
+        />
       </div>
-    </>
+      <div className="bg-white rounded-md p-1.5 flex flex-col items-center shadow-md">
+        <ToolButton
+          label="Undo"
+          icon={Undo2}
+          onClick={undo}
+          isDisabled={!canUndo}
+        />
+        <ToolButton
+          label="Redo"
+          icon={Redo2}
+          onClick={redo}
+          isDisabled={!canRedo}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const ToolbarSkeleton = () => {
+  return (
+    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4 bg-white h-[360px] w-[52px] shadow-md rounded-md" />
   );
 };
 
 export default Toolbar;
-
-export function ToolbarSkeleton() {
-  return (
-    <div className="absolute top-[50%] -translate-y-[50%] left-2 flex flex-col gap-y-4">
-      <div className="bg-white rounded-md p-1.5 flex gap-y-1 flex-col items-center shadom-md w-[100px]">
-        <Skeleton className="h-8 w-full bg-muted-400" />
-      </div>
-      <div className="bg-white rounded-md p-1.5 flex flex-col shadow-md items-center w-[100px]">
-        <div>
-          <Skeleton className="h-8 w-full bg-muted-400" />
-        </div>
-        <div>
-          <Skeleton className="h-8 w-full bg-muted-400" />
-        </div>
-      </div>
-    </div>
-  );
-}
