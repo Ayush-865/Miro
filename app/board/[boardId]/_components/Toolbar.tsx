@@ -54,12 +54,12 @@ const Toolbar = ({
           onClick={() =>
             setCanvasState({
               mode: CanvasMode.Inserting,
-              LayerType: LayerType.Text,
+              layerType: LayerType.Text,
             })
           }
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
-            canvasState.LayerType === LayerType.Text
+            canvasState.layerType === LayerType.Text
           }
         />
         <ToolButton
@@ -68,12 +68,12 @@ const Toolbar = ({
           onClick={() =>
             setCanvasState({
               mode: CanvasMode.Inserting,
-              LayerType: LayerType.Note,
+              layerType: LayerType.Note,
             })
           }
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
-            canvasState.LayerType === LayerType.Note
+            canvasState.layerType === LayerType.Note
           }
         />
         <ToolButton
@@ -82,12 +82,12 @@ const Toolbar = ({
           onClick={() =>
             setCanvasState({
               mode: CanvasMode.Inserting,
-              LayerType: LayerType.Rectangle,
+              layerType: LayerType.Rectangle,
             })
           }
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
-            canvasState.LayerType === LayerType.Rectangle
+            canvasState.layerType === LayerType.Rectangle
           }
         />
         <ToolButton
@@ -96,12 +96,12 @@ const Toolbar = ({
           onClick={() =>
             setCanvasState({
               mode: CanvasMode.Inserting,
-              LayerType: LayerType.Ellipse,
+              layerType: LayerType.Ellipse,
             })
           }
           isActive={
             canvasState.mode === CanvasMode.Inserting &&
-            canvasState.LayerType === LayerType.Ellipse
+            canvasState.layerType === LayerType.Ellipse
           }
         />
         <ToolButton
